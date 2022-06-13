@@ -1,7 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include "Monster.h"
-#include "rand.h"
+#include "Rand.h"
 
 #pragma warning( disable : 26812 )
 #define NOT_DEFINED 0

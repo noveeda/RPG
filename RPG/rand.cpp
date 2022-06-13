@@ -1,4 +1,4 @@
-#include "rand.h"
+#include "Rand.h"
 #include <random>
 
 using namespace std;
