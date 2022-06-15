@@ -1,10 +1,7 @@
 #include <iostream>
-#include <atlstr.h>
 #include "Monster.h"
 
 using namespace std;
-
-void ShowStatus();
 
 int main() {
 	Monster mob[3];
