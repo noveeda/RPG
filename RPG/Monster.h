@@ -35,6 +35,7 @@ public:
 	const char*	GetMonsterType();
 	float	GetMaxHP();
 	float	GetHP();
+	float	Attack();
 	bool	IsDeath();
 	void	TakeDamage(int _damage);
 	void	DropTreasure(float* target_exp, float* target_gold);

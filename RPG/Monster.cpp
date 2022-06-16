@@ -85,6 +85,10 @@ float	Monster::GetHP() {
 	return this->hp;
 }
 
+float	Monster::Attack() {
+	return this->atk;	
+}
+
 void	Monster::TakeDamage(int _damage){
 	float damageLossPercent = (this->def / (100 + this->def));
 	this->hp -= _damage - (_damage * damageLossPercent);
