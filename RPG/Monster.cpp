@@ -3,11 +3,17 @@
 #include "Monster.h"
 #include "Rand.h"
 
-#pragma warning( disable : 26812 )
-#define NOT_DEFINED 0
+#define UNDEFINED 0
 
 using namespace std;
 
+const char* MonsterClassStr[] = {
+	"NO_CLASS",		// Å¬·¡½º ¾øÀ½
+	"COMMON",		// ÀÏ¹Ý ¸÷
+	"RARE",			// ·¹¾î ¸÷
+	"UNIQUE",		// Èñ±Í ¸÷
+	"BOSS"			// º¸½º ¸÷
+}; // ¸ó½ºÅÍ Èñ±Íµµ
 
 const char* MonsterName[] = {
 	"NO NAME",
@@ -19,27 +25,27 @@ const char* MonsterName[] = {
 };
 
 const float MonsterBaseStatus[][6] = {
-//     HP    ATK    DEF    Exp    Gold
-	{	0,	   0,	  0,     0,      0}, // NOT SPECIFIED
-	{  20,     3,     4,     5,      5}, // SLIME
-	{  30,    10,     8,    10,     13}, // GOBLIN
-	{  60,    15,    16,    20,     20}, // COBALT
-	{  30,    20,    20,    20,	    30}, // WOLF
-	{  80,    10,    50,    15,     40}  // GOLEM
+//     HP    ATK    DEF    Exp   Gold
+	{	0,	   0,	  0,     0,     0}, // NOT SPECIFIED
+	{  20,     3,     4,     5,     5}, // SLIME
+	{  30,    10,     8,    10,    13}, // GOBLIN
+	{  60,    15,    16,    20,    20}, // COBALT
+	{  30,    20,    20,    20,	   30}, // WOLF
+	{ 150,    10,    50,    15,    40}  // GOLEM
 };
 
 Monster::Monster() {
-	this->mob_name	= MonsterName[NOT_DEFINED];
+	this->mob_name	= MonsterName[UNDEFINED];
 	this->m_class	= NO_CLASS;
 	this->m_type	= NO_TYPE;
 	// °¢ ¸÷ Å¸ÀÔ¿¡ ÇØ´çÇÏ´Â ½ºÅÈ
-	this->max_hp	= MonsterBaseStatus[NOT_DEFINED][HP];
+	this->max_hp	= MonsterBaseStatus[UNDEFINED][HP];
 	this->hp		= max_hp;
-	this->atk		= MonsterBaseStatus[NOT_DEFINED][ATK];
-	this->def		= MonsterBaseStatus[NOT_DEFINED][DEF];
+	this->atk		= MonsterBaseStatus[UNDEFINED][ATK];
+	this->def		= MonsterBaseStatus[UNDEFINED][DEF];
 
 	// ¹üÀ§ : °æÇèÄ¡ ¡¾ ¡î(°æÇèÄ¡)
-	float exp		= MonsterBaseStatus[NOT_DEFINED][EXP];
+	float exp		= MonsterBaseStatus[UNDEFINED][EXP];
 	this->exp		= Range(exp - sqrt(exp), exp + sqrt(exp));
 	
 	// ¹üÀ§ : °ñµå ¡¾ ¡î(°ñµå)
@@ -102,13 +108,16 @@ bool	Monster::IsDeath() {
 
 void	Monster::DropTreasure(float* target_exp, float* target_gold)
 {
+	// ÇØ´ç ¸÷ÀÇ µî±Þ¿¡ µû¶ó º¸»ó¿¡ °¡ÁßÄ¡ Àû¿ë
 	if (IsDeath() == true) {
-		*target_exp	 = this->exp;
-		*target_gold = this->gold;
+		*target_exp	 += this->exp  * this->m_class;
+		*target_gold += this->gold * this->m_class;
 	}
 }
 
 void	Monster::ShowStatus() {
+	const char* m_c = MonsterClassStr[this->m_class];
+	
 	printf("{\n");
 	printf("    \"MAX_HP\" : \"%g\",\n", max_hp);
 	printf("    \"HP\" : \"%g\",\n", hp);
@@ -116,5 +125,6 @@ void	Monster::ShowStatus() {
 	printf("    \"DEF\" : \"%g\",\n", def);
 	printf("    \"EXP\" : \"%g\",\n", exp);
 	printf("    \"GOLD\" : \"%g\",\n", gold);
+	printf("    \"CLASS\" : \"%s\",\n", m_c);
 	printf("},\n");
 }
