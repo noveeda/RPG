@@ -65,8 +65,8 @@ void Player::TakeDamage(float damage) {
 	//체력 = 데미지 - (데미지 * (방어력 / 100 + 방어력))
 
 	float damageLossPercent = (this->def / (100 + this->def));
-	this->hp -= damage - (damage * damageLossPercent);
-
+	this->hp -= damage - (damage * damageLossPercent); // 체력 감소
+	this->hp = round(this->hp * 100) / 100; // 소수 2자리까지 반올림
 	if (this->hp <= 0) this->hp = 0;
 }
 
@@ -98,22 +98,26 @@ void Player::LevelUp() {
 
 void Player::ShowStatus() {
 	printf("{\t\n");
-	printf("\t\"Name\"	  : \"%s\",\n", this->name);
-	printf("\t\"ATK\"	  : \"%g\",\n", this->atk);
-	printf("\t\"DEF\"	  : \"%g\",\n", this->def);
-	printf("\t\"Max_HP\"  : \"%g\",\n", this->max_hp);
-	printf("\t\"HP\"	  : \"%g\",\n", this->hp);
-	printf("\t\"Exp\"	  : \"%g\",\n", this->exp);
-	printf("\t\"Max_Exp\" : \"%g\",\n", this->max_exp);
-	printf("\t\"LVL\"	  : \"%d\",\n", this->lvl);
+	printf("\t\"Name\": \"%s\",\n",		name);
+	printf("\t\"HP\"  : %g / %g,\n",	hp, max_exp);
+	printf("\t\"ATK\" : %g,\n",			atk);
+	printf("\t\"DEF\" : %g,\n",			def);
+	printf("\t\"Exp\" : %g / %g,\n",	exp, max_exp);
+	printf("\t\"LVL\" : %d,\n",			lvl);
 	printf("},\n");
 }
 
-// 죽을 시 보유 골드, 경험치의 10%를 잃음.
+void Player::GetLoot(float exp, float gold) {
+	if(exp >= 0) this->exp += exp;
+	if (gold >= 0) this->gold += gold;
+}
+
+// 죽을 시 보유 골드, 경험치의 10%를 잃음. (최소 10)
 bool Player::IsDeath() {
 	if (this->hp <= 0) {
-		this->gold -= this->gold * .1;
-		this->exp -= this->exp * .1;
+		if (this->gold >= 100) this->gold -= this->gold * .1;
+		if (this->exp >= 100)  this->exp -= this->exp * .1;
 		return true;
 	}
+	else return false;
 }

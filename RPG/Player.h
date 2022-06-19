@@ -26,6 +26,7 @@ public:
 	void TakeDamage(float _damage);
 	void LevelUp();
 	void ShowStatus();
+	void GetLoot(float exp, float gold);
 
 	bool IsDeath();
 

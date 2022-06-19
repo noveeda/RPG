@@ -38,7 +38,7 @@ public:
 	float	Attack();
 	bool	IsDeath();
 	void	TakeDamage(int _damage);
-	void	DropTreasure(float* target_exp, float* target_gold);
+	float*	DropLoot();
 
 	void	ShowStatus();
 

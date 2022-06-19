@@ -97,7 +97,8 @@ float	Monster::Attack() {
 
 void	Monster::TakeDamage(int _damage){
 	float damageLossPercent = (this->def / (100 + this->def));
-	this->hp -= _damage - (_damage * damageLossPercent);
+	this->hp -= _damage - (_damage * damageLossPercent); // 체력 감소
+	this->hp = round(this->hp * 100) / 100; // 소수 2자리까지 반올림
 	if (this->hp <= 0) this->hp = 0;
 }
 
@@ -106,12 +107,15 @@ bool	Monster::IsDeath() {
 	return false;
 }
 
-void	Monster::DropTreasure(float* target_exp, float* target_gold)
+float*	Monster::DropLoot()
 {
 	// 해당 몹의 등급에 따라 보상에 가중치 적용
 	if (IsDeath() == true) {
-		*target_exp	 += this->exp  * this->m_class;
-		*target_gold += this->gold * this->m_class;
+		// { exp, gold };
+		float* loot = new float[2];
+		loot[0] = this->exp * this->m_class;
+		loot[1] = this->gold * this->m_class;
+		return loot;
 	}
 }
 
@@ -119,12 +123,12 @@ void	Monster::ShowStatus() {
 	const char* m_c = MonsterClassStr[this->m_class];
 	
 	printf("{\n");
-	printf("    \"MAX_HP\" : \"%g\",\n", max_hp);
-	printf("    \"HP\" : \"%g\",\n", hp);
-	printf("    \"ATK\" : \"%g\",\n", atk);
-	printf("    \"DEF\" : \"%g\",\n", def);
-	printf("    \"EXP\" : \"%g\",\n", exp);
-	printf("    \"GOLD\" : \"%g\",\n", gold);
-	printf("    \"CLASS\" : \"%s\",\n", m_c);
+	printf("\t\"Name\"	: \"%s\",\n",	mob_name);
+	printf("\t\"HP\"	: %g / %g,\n",	hp, max_hp);
+	printf("\t\"ATK\"	: %g,\n",		atk);
+	printf("\t\"DEF\"	: %g,\n",		def);
+	printf("\t\"EXP\"	: %g,\n",		exp);
+	printf("\t\"GOLD\"	: %g,\n",		gold);
+	printf("\t\"CLASS\" : \"%s\",\n",	m_c);
 	printf("},\n");
 }
