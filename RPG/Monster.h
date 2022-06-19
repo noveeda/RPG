@@ -5,7 +5,7 @@ enum MonsterClass {
 	RARE,			// 레어 몹
 	UNIQUE,			// 희귀 몹
 	BOSS			// 보스 몹
-}; // 몬스터 희귀도
+}; // 몬스터 등급
 
 enum MonsterType {
 	NO_TYPE = 0,	// 타입 없음

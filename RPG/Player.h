@@ -16,16 +16,21 @@ public:
 	Player();
 	~Player();
 
+	char* GetPlayerName();
+
 	float GetMaxHP();
 	float GetHP();
 	float Attack();
 
-	void SetPlayer(char* name);
+	void SetPlayer(const char* name);
 	void TakeDamage(float _damage);
 	void LevelUp();
+	void ShowStatus();
+
+	bool IsDeath();
 
 private:
-	char*		name;
+	char		name[50];
 	float		max_hp;
 	float		hp;
 	float		atk;
